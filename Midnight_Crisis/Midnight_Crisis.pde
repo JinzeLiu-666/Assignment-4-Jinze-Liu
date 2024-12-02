@@ -28,6 +28,7 @@ void draw() {
     // Remove enemy
     if (e.health <= 0) {
       enemies.remove(i);
+      score += 10;
     }
   }
   // draw bullets
@@ -38,7 +39,6 @@ void draw() {
 
     if (b.isOutOfBounds()) {
       bullets.remove(i);  // Remove bullet if out
-      continue;
     }
 
     // if bullet hits any enemy

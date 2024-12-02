@@ -54,6 +54,17 @@ for (int i = 0; i < enemies.size(); i++) {
       bullets.remove(i);
       continue;
     }
+    
+    // Check if bullet hits any enemy
+    for (int j = enemies.size() - 1; j >= 0; j--) {
+      Enemy e = enemies.get(j);
+      float distance = dist(b.position.x, b.position.y, e.position.x, e.position.y);
+      if (distance < 12) {  // Bullet hits enemy
+        enemies.remove(j);
+        bullets.remove(i);
+        break;
+      }
+    }
   }
 }
 

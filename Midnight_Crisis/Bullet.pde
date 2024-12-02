@@ -6,7 +6,7 @@ class Bullet {
     position = new PVector(startX, startY);
     PVector target = new PVector(targetX, targetY);
     velocity = PVector.sub(target, position);
-    velocity.setMag(5);
+    velocity.setMag(6);  // Set bullet speed
   }
 
   void update() {
@@ -16,7 +16,7 @@ class Bullet {
   void display() {
     fill(255, 0, 0);
     noStroke();
-    ellipse(position.x, position.y, 8, 8);
+    ellipse(position.x, position.y, 5, 5);
   }
 
   // if the bullet is out of bounds

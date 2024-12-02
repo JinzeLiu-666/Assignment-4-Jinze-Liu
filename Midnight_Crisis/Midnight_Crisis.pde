@@ -20,6 +20,11 @@ for (int i = 0; i < enemies.size(); i++) {
     Enemy e = enemies.get(i);
     e.move(player.position);
     e.display();
+    
+    // Remove enemy
+    if (e.health <= 0) {
+      enemies.remove(i);
+    }
 }
   // Spawn enemies periodically
   if (frameCount % 120 == 0) {
@@ -60,6 +65,14 @@ void spawnEnemy() {
   }
   // Add new enemy to the list
   enemies.add(new Enemy(x, y));
+}
+
+void mousePressed() {
+  for (int i = enemies.size() - 1; i >= 0; i--) {
+    if (enemies.get(i).takeDamage(mouseX, mouseY)) {
+      enemies.remove(i);
+    }
+  }
 }
 
 void keyPressed() {

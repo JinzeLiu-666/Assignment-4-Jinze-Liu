@@ -1,7 +1,8 @@
 class Enemy {
   PVector position;  // Enemy position
   float speed = 2;   // Enemy speed
-
+  int health = 3;
+  
   Enemy(float x, float y) {
     position = new PVector(x, y);
   }
@@ -25,6 +26,16 @@ class Enemy {
     stroke(255, 0, 0);
     line(position.x - 2, position.y - 3, position.x - 2, position.y + 1);
     line(position.x + 2, position.y - 3, position.x + 2, position.y + 1);
+  }
+
+  // Reduce health when hit
+  boolean takeDamage(float mouseX, float mouseY) {
+    float distance = dist(mouseX, mouseY, position.x, position.y);  // distance between mouse and enemy
+    if (distance < 12) {  // If distance is less
+      health--;
+      return health <= 0;
+    }
+    return false;
   }
 
   // Enemy chase player

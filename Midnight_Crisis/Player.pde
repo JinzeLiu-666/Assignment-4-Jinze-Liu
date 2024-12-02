@@ -17,7 +17,6 @@ class Player {
   
   // Draw player
   void display() {
-    background(255);
     ellipseMode(CENTER);
     noStroke();
     fill(0);

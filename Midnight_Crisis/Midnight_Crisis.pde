@@ -17,7 +17,7 @@ void draw() {
   player.display();  // Draw the player
   
   for (Enemy e : enemies) {
-    e.move(player.position);  // 让怪物追踪玩家 (Make enemy chase the player)
+    e.move(player.position);  // Make enemy chase the player
     e.display();
   }
   // Spawn enemies periodically

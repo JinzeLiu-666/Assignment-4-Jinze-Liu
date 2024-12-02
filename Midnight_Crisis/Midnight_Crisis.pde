@@ -150,16 +150,16 @@ void gameOver() {
 }
 
 void resetGame() {
+  isGameOver = false;
   player.health = 3;
   score = 0;
   enemies.clear();
   bullets.clear();
   spawnInterval = 100;
   timeCounter = 0;
-  isGameOver = false;
+  player.position = new PVector(width / 2, height / 2);
   rectMode(CORNER);
   textAlign(CORNER, CORNER);
-  
   loop();
 }
 

@@ -22,23 +22,11 @@ for (int i = 0; i < enemies.size(); i++) {
     Enemy e = enemies.get(i);
     e.move(player.position);
     e.display();
-    
-    // Remove enemy
-    if (e.health <= 0) {
-      enemies.remove(i);
-    }
 }
   // Spawn enemies periodically
   if (frameCount % 120 == 0) {
     spawnEnemy();
   }
-  
-  // Show score
-  fill(255, 0, 0);
-  textSize(20);
-  text("Score: " + score, 10, 30);
-  
-  mouseCenter();  // Draw mouse center
 }
 
 void drawMask() {
@@ -74,22 +62,6 @@ void spawnEnemy() {
   }
   // Add new enemy to the list
   enemies.add(new Enemy(x, y));
-}
-
-void mousePressed() {
-  for (int i = enemies.size() - 1; i >= 0; i--) {
-    if (enemies.get(i).takeDamage(mouseX, mouseY)) {
-      enemies.remove(i);
-      score += 10;
-    }
-  }
-}
-
-void mouseCenter(){
-  stroke(255, 0, 0);
-  strokeWeight(2);
-  line(mouseX - 10, mouseY, mouseX + 10, mouseY);
-  line(mouseX, mouseY - 10, mouseX, mouseY + 10);
 }
 
 void keyPressed() {

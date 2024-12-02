@@ -64,6 +64,11 @@ void draw() {
         bullets.remove(i);
         break;
       }
+      if (e.health <= 0) {
+        enemies.remove(i);
+        score += 10;
+        continue;
+      }
     }
   }
 
@@ -74,7 +79,7 @@ void draw() {
 
   // Adjust spawnInterval dynamically
   timeCounter++;
-  if (timeCounter % 600 == 0 && spawnInterval > minSpawnInterval) {
+  if (timeCounter % 300 == 0 && spawnInterval > minSpawnInterval) {
     spawnInterval -= 10;  // Decrease spawn interval every 600 frames
   }
 
@@ -129,24 +134,24 @@ void mouseCenter() {
 }
 
 void gameOver() {
-   background(0);
-   fill(255, 0, 0);
-   textSize(40);
-   textAlign(CENTER, CENTER);
-   text("Game Over", width / 2, height / 2 - 60);
-   textSize(30);
-   text("Score: " + score, width / 2, height / 2 - 5);
-   
-   fill(255);
-   rectMode(CENTER);
-   rect(width / 2, height / 2 + 70, 120, 40);
-   
-   fill(0);
-   textSize(25);
-   text("Try Again", width / 2, height / 2 + 70);
-   isGameOver = true;
-   
-   noLoop();
+  background(0);
+  fill(255, 0, 0);
+  textSize(40);
+  textAlign(CENTER, CENTER);
+  text("Game Over", width / 2, height / 2 - 60);
+  textSize(30);
+  text("Score: " + score, width / 2, height / 2 - 5);
+
+  fill(255);
+  rectMode(CENTER);
+  rect(width / 2, height / 2 + 70, 120, 40);
+
+  fill(0);
+  textSize(25);
+  text("Try Again", width / 2, height / 2 + 70);
+  isGameOver = true;
+
+  noLoop();
 }
 
 void resetGame() {
@@ -166,8 +171,8 @@ void resetGame() {
 void mousePressed() {
   Bullet newBullet = new Bullet(player.position.x, player.position.y, mouseX, mouseY);
   bullets.add(newBullet);
-  if(isGameOver){
-    if(mouseX > 140 && mouseX < 260 && mouseY > 250 && mouseY < 290){
+  if (isGameOver) {
+    if (mouseX > 140 && mouseX < 260 && mouseY > 250 && mouseY < 290) {
       resetGame();
     }
   }

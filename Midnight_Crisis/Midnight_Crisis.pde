@@ -2,6 +2,8 @@ Player player;
 ArrayList<Enemy> enemies;
 float visionRadius = 100;
 
+int score = 0;
+
 void setup() {
   size(400, 400);
   player = new Player(width / 2, height / 2, 3);  // Initialize player object
@@ -30,6 +32,11 @@ for (int i = 0; i < enemies.size(); i++) {
   if (frameCount % 120 == 0) {
     spawnEnemy();
   }
+  
+  // Show score
+  fill(255, 0, 0);
+  textSize(20);
+  text("Score: " + score, 10, 30);
 }
 
 void drawMask() {
@@ -71,6 +78,7 @@ void mousePressed() {
   for (int i = enemies.size() - 1; i >= 0; i--) {
     if (enemies.get(i).takeDamage(mouseX, mouseY)) {
       enemies.remove(i);
+      score += 10;
     }
   }
 }

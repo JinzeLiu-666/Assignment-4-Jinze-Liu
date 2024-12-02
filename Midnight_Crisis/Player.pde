@@ -1,6 +1,7 @@
 class Player {
   PVector position;
   PVector speed;
+  int health = 3;
   
   // Constructor
   Player(float x, float y, float speedValue) {
@@ -40,6 +41,12 @@ class Player {
       speed.set(-moveSpeed, 0);
     } else if (direction == 'd' || direction == 'D') {
       speed.set(moveSpeed, 0);
+    }
+  }
+  void reduceHealth() {
+    health--;
+    if(health <= 0){
+      print("Game Over");
     }
   }
 }

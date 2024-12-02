@@ -21,34 +21,36 @@ void setup() {
 
 void draw() {
   background(255);
-
   drawMask();  // Draw the black mask
-
-  player.update();   // Update player position
+  player.update();  // Update player position
   player.display();  // Draw the player
 
-  for (int i = 0; i < enemies.size(); i++) {
+  // Update and draw all enemies
+  for (int i = enemies.size() - 1; i >= 0; i--) {
     Enemy e = enemies.get(i);
     e.move(player.position);
     e.display();
 
-    // Remove enemy
-    if (e.health <= 0) {
+    // Check enemy and player
+    float distance = dist(e.position.x, e.position.y, player.position.x, player.position.y);
+    if (distance < 13) {
       enemies.remove(i);
-      score += 10;
+      player.reduceHealth();
     }
   }
-  // draw bullets
+
+  // Update and draw all bullets
   for (int i = bullets.size() - 1; i >= 0; i--) {
     Bullet b = bullets.get(i);
     b.update();
     b.display();
 
     if (b.isOutOfBounds()) {
-      bullets.remove(i);  // Remove bullet if out
+      bullets.remove(i);  // Remove bullet if out of bounds
+      continue;
     }
 
-    // if bullet hits any enemy
+    // Check if bullet hits any enemy
     for (int j = enemies.size() - 1; j >= 0; j--) {
       Enemy e = enemies.get(j);
       float distance = dist(b.position.x, b.position.y, e.position.x, e.position.y);
@@ -60,48 +62,24 @@ void draw() {
     }
   }
 
-  // Spawn enemies periodically
+  // Spawn enemies based on spawnInterval
   if (frameCount % spawnInterval == 0) {
     spawnEnemy();
   }
+
+  // Adjust spawnInterval dynamically
+  timeCounter++;
+  if (timeCounter % 600 == 0 && spawnInterval > minSpawnInterval) {
+    spawnInterval -= 10;  // Decrease spawn interval every 600 frames
+  }
+
   mouseCenter();  // Draw mouse center
 
-  // Show score
+  // Display score and player's health
   fill(255, 0, 0);
   textSize(20);
-  text("Score: " + score, 10, 30);
-
-  // spawn interval over time
-  timeCounter++;
-  if (timeCounter % 300 == 0 && spawnInterval > minSpawnInterval) {
-    spawnInterval -= 10;
-
-    mouseCenter();  // Draw mouse center
-
-    // draw bullets
-    for (int i = bullets.size() - 1; i >= 0; i--) {
-      Bullet b = bullets.get(i);
-      b.update();
-      b.display();
-
-      // if bullet is out of bounds
-      if (b.isOutOfBounds()) {
-        bullets.remove(i);
-        continue;
-      }
-
-      // Check if bullet hits any enemy
-      for (int j = enemies.size() - 1; j >= 0; j--) {
-        Enemy e = enemies.get(j);
-        float distance = dist(b.position.x, b.position.y, e.position.x, e.position.y);
-        if (distance < 12) {  // Bullet hits enemy
-          enemies.remove(j);
-          bullets.remove(i);
-          break;
-        }
-      }
-    }
-  }
+  text("Score: " + score, 10, 30);  // Display score
+  text("Health: " + player.health, 10, 60);  // Display player's health
 }
 
 void drawMask() {

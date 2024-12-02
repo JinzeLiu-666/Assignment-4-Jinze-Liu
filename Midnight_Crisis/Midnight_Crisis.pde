@@ -1,13 +1,15 @@
 Player player;
 ArrayList<Enemy> enemies;
-float visionRadius = 100;
+ArrayList<Bullet> bullets;
 
+float visionRadius = 100;
 int score = 0;
 
 void setup() {
   size(400, 400);
   player = new Player(width / 2, height / 2, 3);  // Initialize player object
   enemies = new ArrayList<Enemy>();  // Initialize enemy list
+  bullets = new ArrayList<Bullet>();
 }
 
 void draw() {
@@ -18,7 +20,7 @@ void draw() {
   player.update();   // Update player position
   player.display();  // Draw the player
   
-for (int i = 0; i < enemies.size(); i++) {
+  for (int i = 0; i < enemies.size(); i++) {
     Enemy e = enemies.get(i);
     e.move(player.position);
     e.display();
@@ -27,7 +29,30 @@ for (int i = 0; i < enemies.size(); i++) {
     if (e.health <= 0) {
       enemies.remove(i);
     }
-}
+  }
+  // draw bullets
+  for (int i = bullets.size() - 1; i >= 0; i--) {
+    Bullet b = bullets.get(i);
+    b.update();
+    b.display();
+
+    if (b.isOutOfBounds()) {
+      bullets.remove(i);  // Remove bullet if out
+      continue;
+    }
+
+    // if bullet hits any enemy
+    for (int j = enemies.size() - 1; j >= 0; j--) {
+      Enemy e = enemies.get(j);
+      float distance = dist(b.position.x, b.position.y, e.position.x, e.position.y);
+      if (distance < 12) {
+        e.takeDamage();
+        bullets.remove(i);
+        break;
+      }
+    }
+  }
+
   // Spawn enemies periodically
   if (frameCount % 120 == 0) {
     spawnEnemy();
@@ -77,12 +102,8 @@ void spawnEnemy() {
 }
 
 void mousePressed() {
-  for (int i = enemies.size() - 1; i >= 0; i--) {
-    if (enemies.get(i).takeDamage(mouseX, mouseY)) {
-      enemies.remove(i);
-      score += 10;
-    }
-  }
+  Bullet newBullet = new Bullet(player.position.x, player.position.y, mouseX, mouseY);
+  bullets.add(newBullet);
 }
 
 void mouseCenter(){

@@ -16,10 +16,11 @@ void draw() {
   player.update();   // Update player position
   player.display();  // Draw the player
   
-  for (Enemy e : enemies) {
-    e.move(player.position);  // Make enemy chase the player
+for (int i = 0; i < enemies.size(); i++) {
+    Enemy e = enemies.get(i);
+    e.move(player.position);
     e.display();
-  }
+}
   // Spawn enemies periodically
   if (frameCount % 120 == 0) {
     spawnEnemy();

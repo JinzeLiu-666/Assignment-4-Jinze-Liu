@@ -149,9 +149,27 @@ void gameOver() {
    noLoop();
 }
 
+void resetGame() {
+  player.health = 3;
+  score = 0;
+  enemies.clear();
+  bullets.clear();
+  spawnInterval = 100;
+  timeCounter = 0;
+  isGameOver = false;
+  
+  loop();
+}
+
 void mousePressed() {
   Bullet newBullet = new Bullet(player.position.x, player.position.y, mouseX, mouseY);
   bullets.add(newBullet);
+  if(isGameOver){
+    if(mouseX > 140 && mouseX < 260 && mouseY > 250 && mouseY < 290){
+      resetGame();
+    }
+  }
+
 }
 
 void keyPressed() {

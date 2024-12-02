@@ -13,6 +13,7 @@ void draw() {
 
   player.update();   // Update player position
   player.display();  // Draw the player
+  mouseCenter();  // Draw mouse center
 }
 
 void drawMask() {
@@ -26,6 +27,13 @@ void drawMask() {
     fill(255, 255, 255, alpha);
     ellipse(player.position.x, player.position.y, r * 2, r * 2);
   }
+}
+
+void mouseCenter(){
+  stroke(255, 0, 0);
+  strokeWeight(2);
+  line(mouseX - 10, mouseY, mouseX + 10, mouseY);
+  line(mouseX, mouseY - 10, mouseX, mouseY + 10);
 }
 
 void keyPressed() {

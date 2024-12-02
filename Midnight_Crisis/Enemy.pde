@@ -22,12 +22,6 @@ class Enemy {
       isHit = false;  // Reset hit status
     }
     ellipse(position.x, position.y, 12, 12);
-
-    noStroke(); 
-    fill(0);
-    ellipse(position.x, position.y, 12, 12);
-    
-    stroke(0);
     
     line(position.x, position.y, position.x + 9, position.y - 5);
     line(position.x + 9, position.y - 5, position.x + 12, position.y - 2);

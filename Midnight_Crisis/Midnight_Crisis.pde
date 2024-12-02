@@ -5,6 +5,11 @@ ArrayList<Bullet> bullets;
 float visionRadius = 100;
 int score = 0;
 
+int spawnInterval = 100;
+int minSpawnInterval = 40;
+int timeCounter = 0;
+
+
 void setup() {
   size(400, 400);
   player = new Player(width / 2, height / 2, 3);  // Initialize player object
@@ -54,16 +59,21 @@ void draw() {
   }
 
   // Spawn enemies periodically
-  if (frameCount % 120 == 0) {
+  if (frameCount % spawnInterval == 0) {
     spawnEnemy();
   }
+  mouseCenter();  // Draw mouse center
   
   // Show score
   fill(255, 0, 0);
   textSize(20);
   text("Score: " + score, 10, 30);
-  
-  mouseCenter();  // Draw mouse center
+
+  // spawn interval over time
+  timeCounter++;
+  if (timeCounter % 300 == 0 && spawnInterval > minSpawnInterval) {
+    spawnInterval -= 10;
+  }
 }
 
 void drawMask() {
@@ -101,16 +111,16 @@ void spawnEnemy() {
   enemies.add(new Enemy(x, y));
 }
 
-void mousePressed() {
-  Bullet newBullet = new Bullet(player.position.x, player.position.y, mouseX, mouseY);
-  bullets.add(newBullet);
-}
-
 void mouseCenter(){
   stroke(255, 0, 0);
   strokeWeight(2);
   line(mouseX - 10, mouseY, mouseX + 10, mouseY);
   line(mouseX, mouseY - 10, mouseX, mouseY + 10);
+}
+
+void mousePressed() {
+  Bullet newBullet = new Bullet(player.position.x, player.position.y, mouseX, mouseY);
+  bullets.add(newBullet);
 }
 
 void keyPressed() {

@@ -12,7 +12,9 @@ int timeCounter = 0;
 
 void setup() {
   size(400, 400);
+
   player = new Player(width / 2, height / 2, 3);  // Initialize player object
+  bullets = new ArrayList<Bullet>();  // Initialize bullet list
   enemies = new ArrayList<Enemy>();  // Initialize enemy list
   bullets = new ArrayList<Bullet>();
 }
@@ -24,12 +26,12 @@ void draw() {
 
   player.update();   // Update player position
   player.display();  // Draw the player
-  
+
   for (int i = 0; i < enemies.size(); i++) {
     Enemy e = enemies.get(i);
     e.move(player.position);
     e.display();
-    
+
     // Remove enemy
     if (e.health <= 0) {
       enemies.remove(i);
@@ -63,7 +65,7 @@ void draw() {
     spawnEnemy();
   }
   mouseCenter();  // Draw mouse center
-  
+
   // Show score
   fill(255, 0, 0);
   textSize(20);
@@ -73,6 +75,32 @@ void draw() {
   timeCounter++;
   if (timeCounter % 300 == 0 && spawnInterval > minSpawnInterval) {
     spawnInterval -= 10;
+
+    mouseCenter();  // Draw mouse center
+
+    // draw bullets
+    for (int i = bullets.size() - 1; i >= 0; i--) {
+      Bullet b = bullets.get(i);
+      b.update();
+      b.display();
+
+      // if bullet is out of bounds
+      if (b.isOutOfBounds()) {
+        bullets.remove(i);
+        continue;
+      }
+
+      // Check if bullet hits any enemy
+      for (int j = enemies.size() - 1; j >= 0; j--) {
+        Enemy e = enemies.get(j);
+        float distance = dist(b.position.x, b.position.y, e.position.x, e.position.y);
+        if (distance < 12) {  // Bullet hits enemy
+          enemies.remove(j);
+          bullets.remove(i);
+          break;
+        }
+      }
+    }
   }
 }
 
@@ -110,8 +138,7 @@ void spawnEnemy() {
   // Add new enemy to the list
   enemies.add(new Enemy(x, y));
 }
-
-void mouseCenter(){
+void mouseCenter() {
   stroke(255, 0, 0);
   strokeWeight(2);
   line(mouseX - 10, mouseY, mouseX + 10, mouseY);

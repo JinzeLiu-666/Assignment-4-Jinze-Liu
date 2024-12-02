@@ -157,6 +157,8 @@ void resetGame() {
   spawnInterval = 100;
   timeCounter = 0;
   isGameOver = false;
+  rectMode(CORNER);
+  textAlign(CORNER, CORNER);
   
   loop();
 }
@@ -169,7 +171,6 @@ void mousePressed() {
       resetGame();
     }
   }
-
 }
 
 void keyPressed() {

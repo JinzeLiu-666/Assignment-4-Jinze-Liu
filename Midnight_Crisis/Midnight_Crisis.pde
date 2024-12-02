@@ -9,6 +9,7 @@ int spawnInterval = 100;
 int minSpawnInterval = 40;
 int timeCounter = 0;
 
+boolean isGameOver = false;
 
 void setup() {
   size(400, 400);
@@ -20,6 +21,10 @@ void setup() {
 }
 
 void draw() {
+  if (isGameOver) {
+    gameOver();
+    return;
+  }
   background(255);
   drawMask();  // Draw the black mask
   player.update();  // Update player position
@@ -121,6 +126,27 @@ void mouseCenter() {
   strokeWeight(2);
   line(mouseX - 10, mouseY, mouseX + 10, mouseY);
   line(mouseX, mouseY - 10, mouseX, mouseY + 10);
+}
+
+void gameOver() {
+   background(0);
+   fill(255, 0, 0);
+   textSize(40);
+   textAlign(CENTER, CENTER);
+   text("Game Over", width / 2, height / 2 - 60);
+   textSize(30);
+   text("Score: " + score, width / 2, height / 2 - 5);
+   
+   fill(255);
+   rectMode(CENTER);
+   rect(width / 2, height / 2 + 70, 120, 40);
+   
+   fill(0);
+   textSize(25);
+   text("Try Again", width / 2, height / 2 + 70);
+   isGameOver = true;
+   
+   noLoop();
 }
 
 void mousePressed() {

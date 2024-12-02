@@ -47,6 +47,7 @@ class Player {
     health--;
     if(health <= 0){
       print("Game Over");
+      isGameOver = true;
     }
   }
 }

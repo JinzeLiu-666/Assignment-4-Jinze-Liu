@@ -21,20 +21,12 @@ void draw() {
     e.move(player.position);
     e.display();
     
-    // Check enemy and player
-    float distance = dist(e.position.x, e.position.y, player.position.x, player.position.y);
-    if (distance < 13) {
-      enemies.remove(i);
-      player.reduceHealth();
-    }
+    
   }
   // Spawn enemies periodically
   if (frameCount % 120 == 0) {
     spawnEnemy();
   }
-  fill(255, 0, 0);
-  textSize(20);
-  text("Health: " + player.health, 10, 30);  // Display player's health
 }
 
 void drawMask() {

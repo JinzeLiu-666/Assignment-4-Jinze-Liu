@@ -2,6 +2,11 @@ Player player;
 ArrayList<Enemy> enemies;
 float visionRadius = 100;
 
+int spawnInterval = 100;
+int minSpawnInterval = 30;
+int timeCounter = 0;
+
+
 void setup() {
   size(400, 400);
   player = new Player(width / 2, height / 2, 3);  // Initialize player object
@@ -22,8 +27,14 @@ for (int i = 0; i < enemies.size(); i++) {
     e.display();
 }
   // Spawn enemies periodically
-  if (frameCount % 120 == 0) {
+  if (frameCount % spawnInterval == 0) {
     spawnEnemy();
+  }
+
+  // spawn interval over time
+  timeCounter++;
+  if (timeCounter % 300 == 0 && spawnInterval > minSpawnInterval) {
+    spawnInterval -= 10;
   }
 }
 

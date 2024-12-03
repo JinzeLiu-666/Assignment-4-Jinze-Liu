@@ -1,8 +1,8 @@
 class Enemy {
-  PVector position;  // Enemy position
-  float speed = 2;   // Enemy speed
+  PVector position;
+  float speed = 2;
   
-  int health = 3;
+  int health = 2;
   boolean isHit = false;
   int hitTimer = 0;
   
@@ -15,11 +15,11 @@ class Enemy {
     if (isHit && hitTimer > 0) {
       fill(255, 0, 0);
       stroke(255, 0, 0);
-      hitTimer--;  // Decrease timer
+      hitTimer--;  // decrease timer
     } else {
       fill(0);
       stroke(0);
-      isHit = false;  // Reset hit status
+      isHit = false;  // reset hit status
     }
     ellipse(position.x, position.y, 12, 12);
     
@@ -37,16 +37,17 @@ class Enemy {
     line(position.x - 2, position.y - 3, position.x - 2, position.y + 1);
     line(position.x + 2, position.y - 3, position.x + 2, position.y + 1);
   }
-  // take damage when hit by a bullet)
+  
+  // take damage when hit by bullet
   void takeDamage() {
     health--;
     isHit = true;
     hitTimer = 10;
   }
 
-  // Enemy chase player
+  // enemy chase player
   void move(PVector playerPosition) {
-    PVector direction = PVector.sub(playerPosition, position);  // Calculate direction vector
+    PVector direction = PVector.sub(playerPosition, position);  // direction vector
     direction.setMag(speed);
     position.add(direction);
   }

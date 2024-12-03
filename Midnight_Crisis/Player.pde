@@ -3,20 +3,17 @@ class Player {
   PVector speed;
   int health = 3;
   
-  // Constructor
-  Player(float x, float y, float speedValue) {
+  Player(float x, float y) {
     position = new PVector(x, y);
     speed = new PVector(0, 0);
   }
   
-  // Update player position
   void update() {
     position.add(speed);
     position.x = constrain(position.x, 0, width);
     position.y = constrain(position.y, 0, height);
   }
   
-  // Draw player
   void display() {
     ellipseMode(CENTER);
     noStroke();
@@ -30,7 +27,7 @@ class Player {
     line(position.x + 2, position.y - 2, position.x + 2, position.y);
   }
   
-  // Handle movement based on key press
+  // player move
   void move(char direction) {
     float moveSpeed = 3;
     if (direction == 'w' || direction == 'W') {

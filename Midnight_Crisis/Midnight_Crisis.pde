@@ -1,42 +1,58 @@
+// Assignment Title: Midnight Crisis
+// Programmer: Jinze Liu
+// Date: December 3, 2024
+// Programming Language: Java
+/* Purpose: The purpose of this program is for the user to control the character's movement
+            using the WASD keys on the keyboard and to shoot bullets by moving and clicking
+            the mouse, thereby achieving the gameplay objective.*/
+
+// ------------------------ Global Variables ------------------------ //
 Player player;
 ArrayList<Enemy> enemies;
 ArrayList<Bullet> bullets;
 
+// vision radius
 float visionRadius = 100;
 int score = 0;
 
-int spawnInterval = 100;
-int minSpawnInterval = 40;
+// Enemy spawn settings
+int spawnInterval = 100;   // stare spawning time 
+int minSpawnInterval = 40;  // Minimum spawning time
 int timeCounter = 0;
 
 boolean isGameOver = false;
 
+// ----------------------------- Setup ----------------------------- //
 void setup() {
   size(400, 400);
-
-  player = new Player(width / 2, height / 2, 3);  // Initialize player object
-  bullets = new ArrayList<Bullet>();  // Initialize bullet list
-  enemies = new ArrayList<Enemy>();  // Initialize enemy list
+  
+  // Create the player
+  player = new Player(width / 2, height / 2);
+  
+  // Initialize lists bullets and enemies
   bullets = new ArrayList<Bullet>();
+  enemies = new ArrayList<Enemy>();
 }
 
+// ----------------------------- Draw ----------------------------- //
 void draw() {
+  // If the game is over, show the game over screen
   if (isGameOver) {
     gameOver();
     return;
   }
   background(255);
-  drawMask();  // Draw the black mask
-  player.update();  // Update player position
-  player.display();  // Draw the player
+  drawMask();  // player's vision
+  player.update();  //update player position
+  player.display();
 
-  // Update and draw all enemies
+  // all enemies
   for (int i = enemies.size() - 1; i >= 0; i--) {
     Enemy e = enemies.get(i);
     e.move(player.position);
     e.display();
 
-    // Check enemy and player
+    // enemy touches player check
     float distance = dist(e.position.x, e.position.y, player.position.x, player.position.y);
     if (distance < 13) {
       enemies.remove(i);
@@ -44,18 +60,19 @@ void draw() {
     }
   }
 
-  // Update and draw all bullets
+  // all bullets
   for (int i = bullets.size() - 1; i >= 0; i--) {
     Bullet b = bullets.get(i);
     b.update();
     b.display();
-
+    
+    // remove bullet if out
     if (b.isOutOfBounds()) {
-      bullets.remove(i);  // Remove bullet if out of bounds
+      bullets.remove(i);
       continue;
     }
 
-    // Check if bullet hits any enemy
+    // check bullet hits enemy
     for (int j = enemies.size() - 1; j >= 0; j--) {
       Enemy e = enemies.get(j);
       float distance = dist(b.position.x, b.position.y, e.position.x, e.position.y);
@@ -64,6 +81,7 @@ void draw() {
         bullets.remove(i);
         break;
       }
+      // remove enemy if health is 0
       if (e.health <= 0) {
         enemies.remove(i);
         score += 10;
@@ -72,32 +90,34 @@ void draw() {
     }
   }
 
-  // Spawn enemies based on spawnInterval
+  // spawn enemies time
   if (frameCount % spawnInterval == 0) {
     spawnEnemy();
   }
 
-  // Adjust spawnInterval dynamically
+  // spawn enemies faster by time
   timeCounter++;
   if (timeCounter % 300 == 0 && spawnInterval > minSpawnInterval) {
-    spawnInterval -= 10;  // Decrease spawn interval every 600 frames
+    spawnInterval -= 10;
   }
+  
+  // mouse center
+  mouseCenter(); 
 
-  mouseCenter();  // Draw mouse center
-
-  // Display score and player's health
+  // score and health
   fill(255, 0, 0);
   textSize(20);
-  text("Score: " + score, 10, 30);  // Display score
-  text("Health: " + player.health, 10, 60);  // Display player's health
+  text("Score: " + score, 10, 30);
+  text("Health: " + player.health, 10, 60);
 }
 
+// ----------------------------- Draw Vision ----------------------------- //
 void drawMask() {
   fill(0);
   noStroke();
   rect(0, 0, width, height);
 
-  // Draw gradient transparent circle in the black mask
+  // gradient circle
   for (float r = visionRadius; r > 0; r -= 2) {
     float alpha = map(r, 0, visionRadius, 255, 0);
     fill(255, 255, 255, alpha);
@@ -105,10 +125,12 @@ void drawMask() {
   }
 }
 
-// Spawn enemies randomly at screen edges
+// ----------------------------- Spawn Enemies ----------------------------- //
 void spawnEnemy() {
-  float x = 0, y = 0;
-  // Randomly choose to spawn the enemy on a screen edge
+  float x = 0;
+  float y = 0;
+  
+  // Pick a random edge
   int edge = int(random(4));
   if (edge == 0) {
     x = 0;
@@ -123,9 +145,11 @@ void spawnEnemy() {
     x = random(width);
     y = height;
   }
-  // Add new enemy to the list
+  // add new enemy
   enemies.add(new Enemy(x, y));
 }
+
+// ----------------------------- Mouse Center ----------------------------- //
 void mouseCenter() {
   stroke(255, 0, 0);
   strokeWeight(2);
@@ -133,6 +157,7 @@ void mouseCenter() {
   line(mouseX, mouseY - 10, mouseX, mouseY + 10);
 }
 
+// ------------------------------ Game Over ------------------------------ //
 void gameOver() {
   background(0);
   fill(255, 0, 0);
@@ -149,11 +174,12 @@ void gameOver() {
   fill(0);
   textSize(25);
   text("Try Again", width / 2, height / 2 + 70);
+  
   isGameOver = true;
-
   noLoop();
 }
 
+// ----------------------------- Reset Game ----------------------------- //
 void resetGame() {
   isGameOver = false;
   player.health = 3;
@@ -168,9 +194,12 @@ void resetGame() {
   loop();
 }
 
+// ----------------------------- Mouse Pressed ----------------------------- //
 void mousePressed() {
   Bullet newBullet = new Bullet(player.position.x, player.position.y, mouseX, mouseY);
-  bullets.add(newBullet);
+  bullets.add(newBullet);  // new bullet
+  
+  // button is clicked
   if (isGameOver) {
     if (mouseX > 140 && mouseX < 260 && mouseY > 250 && mouseY < 290) {
       resetGame();
@@ -178,10 +207,12 @@ void mousePressed() {
   }
 }
 
+// ------------------------------ Key Pressed ------------------------------ //
 void keyPressed() {
-  player.move(key);  // Call player's move method
+  player.move(key);
 }
 
+// ------------------------------ Key Released ------------------------------ //
 void keyReleased() {
-  player.speed.set(0, 0);  // Stop player's movement
+  player.speed.set(0, 0);
 }

@@ -1,12 +1,13 @@
 class Bullet {
   PVector position;
   PVector velocity;
-
+  
+  // create a bullet at the starting position, aimed at a target position
   Bullet(float startX, float startY, float targetX, float targetY) {
     position = new PVector(startX, startY);
     PVector target = new PVector(targetX, targetY);
     velocity = PVector.sub(target, position);
-    velocity.setMag(6);  // Set bullet speed
+    velocity.setMag(6);  // bullet speed
   }
 
   void update() {

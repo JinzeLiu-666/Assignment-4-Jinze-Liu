@@ -121,7 +121,7 @@ void draw() {
   // score and health
   fill(255, 0, 0);
   textSize(20);
-  text("Score: " + score, 10, 30);
+  text("Score: " + score + "                                                        R restart", 10, 30);
   fill(255, 0, 0, healthColor1);
   rect(15, 50, 8, 8);
   fill(255, 0, 0, healthColor2);
@@ -227,6 +227,9 @@ void mousePressed() {
 // ------------------------------ Key Pressed ------------------------------ //
 void keyPressed() {
   player.move(key);
+  if (key == 'R' || key == 'r') {
+    isGameOver = true;
+  }
 }
 
 // ------------------------------ Key Released ------------------------------ //

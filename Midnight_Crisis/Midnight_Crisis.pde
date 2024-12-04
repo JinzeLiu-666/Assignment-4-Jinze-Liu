@@ -21,6 +21,9 @@ int minSpawnInterval = 40;  // Minimum spawning time
 int timeCounter = 0;
 
 boolean isGameOver = false;
+int healthColor1 = 255;
+int healthColor2 = 255;
+int healthColor3 = 255;
 
 // ----------------------------- Setup ----------------------------- //
 void setup() {
@@ -81,15 +84,16 @@ void draw() {
         bullets.remove(i);
         break;
       }
-      // remove enemy if health is 0
+    }
+    // remove enemy if health is 0
+    for (int j = enemies.size() - 1; j >= 0; j--) {
+      Enemy e = enemies.get(j);
       if (e.health <= 0) {
-        enemies.remove(i);
-        score += 10;
-        continue;
+        enemies.remove(j);  // 移除敌人
+        score += 10;  // 加分
       }
     }
   }
-
   // spawn enemies time
   if (frameCount % spawnInterval == 0) {
     spawnEnemy();
@@ -103,12 +107,27 @@ void draw() {
   
   // mouse center
   mouseCenter(); 
-
+  
+  if(player.health <= 2){
+    healthColor3 = 0;
+  }
+  if(player.health <= 1){
+    healthColor2 = 0;
+  }
+  if(player.health <= 0){
+    healthColor1 = 0;
+  }
+  
   // score and health
   fill(255, 0, 0);
   textSize(20);
   text("Score: " + score, 10, 30);
-  text("Health: " + player.health, 10, 60);
+  fill(255, 0, 0, healthColor1);
+  rect(15, 50, 8, 8);
+  fill(255, 0, 0, healthColor2);
+  rect(35, 50, 8, 8);
+  fill(255, 0, 0, healthColor3);
+  rect(55, 50, 8, 8);
 }
 
 // ----------------------------- Draw Vision ----------------------------- //
@@ -161,19 +180,13 @@ void mouseCenter() {
 void gameOver() {
   background(0);
   fill(255, 0, 0);
-  textSize(40);
   textAlign(CENTER, CENTER);
-  text("Game Over", width / 2, height / 2 - 60);
-  textSize(30);
-  text("Score: " + score, width / 2, height / 2 - 5);
+  textSize(40);
+  text("Score: " + score, width / 2, height / 2 - 30);
 
   fill(255);
   rectMode(CENTER);
   rect(width / 2, height / 2 + 70, 120, 40);
-
-  fill(0);
-  textSize(25);
-  text("Try Again", width / 2, height / 2 + 70);
   
   isGameOver = true;
   noLoop();
@@ -191,7 +204,11 @@ void resetGame() {
   player.position = new PVector(width / 2, height / 2);
   rectMode(CORNER);
   textAlign(CORNER, CORNER);
+  healthColor1 = 255;
+  healthColor2 = 255;
+  healthColor3 = 255;
   loop();
+  
 }
 
 // ----------------------------- Mouse Pressed ----------------------------- //

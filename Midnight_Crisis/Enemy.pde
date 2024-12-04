@@ -2,7 +2,7 @@ class Enemy {
   PVector position;
   float speed = 2;
   
-  int health = 2;
+  int health = 3;
   boolean isHit = false;
   int hitTimer = 0;
   
